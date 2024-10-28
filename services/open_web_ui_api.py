@@ -27,8 +27,26 @@ class OpenWebUiApiClient:
                 url, json=payload, headers=self.headers, timeout=20
             )
             return response.json()["choices"][0]["message"]["content"]
-        # .choices.message.content
         except Exception as e:  # Capture all exceptions
             # Log or print the error message
             print(f"An error occurred: {str(e)}")
+            return None
+
+    def get_completion_from_messages(self, messages, model="llama3.1:latest"):
+        try:
+            url = f"{self.base_url}/chat/completions"
+            payload = {
+                "model": model,
+                "messages": messages,
+            }
+            response = requests.post(
+                url,
+                json=payload,
+                headers=self.headers,
+                timeout=20
+            )
+            return response.json()["choices"][0]["message"]["content"]
+        except Exception as e:  # Capture all exceptions
+            # Log or print the error message
+            print(f"An error occurred: {e}")
             return None
